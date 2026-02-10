@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Finance System</title>
+    <style>
+        body {
+            font-family: "Segoe UI", Arial, sans-serif;
+            background: linear-gradient(135deg, #e9f0ff, #f7f9fc);
+        }
+
+        .card {
+            width: 520px;
+            margin: 40px auto;
+            background: #fff;
+            padding: 25px;
+            border-radius: 14px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.08);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        /* BIG BALANCE BOX */
+        .balance-box {
+            text-align: center;
+            padding: 22px;
+            border-radius: 14px;
+            margin-bottom: 25px;
+            font-weight: bold;
+        }
+
+        .balance-title {
+            font-size: 16px;
+            letter-spacing: 1px;
+            opacity: 0.8;
+        }
+
+        .balance-amount {
+            font-size: 36px;
+            margin-top: 8px;
+        }
+
+        .positive {
+            background: linear-gradient(135deg, #e6fff1, #c9f7df);
+            color: #1e7e34;
+        }
+
+        .negative {
+            background: linear-gradient(135deg, #ffeaea, #ffd3d3);
+            color: #c82333;
+        }
+
+        input, select, button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 12px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            font-size: 14px;
+        }
+
+        button {
+            background: linear-gradient(135deg, #28a745, #20c997);
+            color: white;
+            border: none;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        table {
+            width: 100%;
+            margin-top: 25px;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 10px;
+            border: 1px solid #e1e1e1;
+            text-align: center;
+        }
+
+        th {
+            background: #f1f4ff;
+        }
+
+        .credit {
+            color: #28a745;
+            font-weight: bold;
+        }
+
+        .debit {
+            color: #dc3545;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <h2>💰 Finance System</h2>
+
+    <!-- TOTAL BALANCE -->
+    <div class="balance-box {% if total_balance >= 0 %}positive{% else %}negative{% endif %}">
+        <div class="balance-title">TOTAL BALANCE</div>
+        <div class="balance-amount">
+            {% if total_balance >= 0 %}
+                ₹ {{ total_balance }}
+            {% else %}
+                - ₹ {{ abs_balance }}
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- FORM -->
+    <form method="POST">
+        {% csrf_token %}
+
+        <select name="type">
+            <option value="Credit">Credit (+)</option>
+            <option value="Debit">Debit (-)</option>
+        </select>
+
+        <input type="number" name="amount" placeholder="Amount" required>
+        <input type="text" name="description" placeholder="Description" required>
+
+        <button type="submit">Add Transaction</button>
+    </form>
+
+    <!-- TABLE -->
+    <table>
+        <tr>
+            <th>Type</th>
+            <th>Amount</th>
+            <th>Description</th>
+        </tr>
+
+        {% for t in transactions %}
+        <tr>
+            <td class="{% if t.type == 'Credit' %}credit{% else %}debit{% endif %}">
+                {{ t.type }}
+            </td>
+            <td>
+                {% if t.type == 'Credit' %}
+                    +{{ t.amount }}
+                {% else %}
+                    -{{ t.amount }}
+                {% endif %}
+            </td>
+            <td>{{ t.description }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="3">No transactions yet</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+
+</body>
+</html>
