@@ -41,7 +41,6 @@ Application development is not the primary focus. Infrastructure automation is.
 - Automate dependency installation  
 - Enable reproducible infrastructure setup  
 - Integrate CI/CD pipeline for automated deployment  
-- Support container orchestration using Kubernetes  
 
 ---
 
@@ -51,7 +50,6 @@ Application development is not the primary focus. Infrastructure automation is.
 - **Containerization:** Docker  
 - **Infrastructure as Code:** Terraform
 - **CI/CD:** GitHub Actions  
-- **Orchestration:** Kubernetes  
 
 ---
 
